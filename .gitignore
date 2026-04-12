@@ -48,3 +48,4 @@ prisma/generated
 
 # Test artifacts
 coverage
+/generated/prisma

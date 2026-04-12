@@ -1,0 +1,39 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Webhook {
+  id           String @id @default(uuid())
+  url          String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  transactions AiTransaction[]
+}
+
+model AiTransaction {
+  id           String @id @default(uuid())
+  webhookId    String
+  webhook      Webhook @relation(fields: [webhookId], references: [id])
+  aiRequest    Json
+  aiResponse   Json?
+  status       AiTransactionStatus   @default(PENDING)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+enum AiTransactionStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  FAILED
+}
