@@ -1,6 +1,12 @@
-import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
-import { PrismaClient } from '../../generated/prisma/client';
+import 'dotenv/config';
+import {
+  Injectable,
+  OnModuleInit,
+  OnModuleDestroy,
+  Logger,
+} from '@nestjs/common';
 import { PrismaPg } from '@prisma/adapter-pg';
+import { PrismaClient } from '../generated/prisma/client';
 
 @Injectable()
 export class PrismaService
@@ -15,7 +21,14 @@ export class PrismaService
   }
 
   async onModuleInit() {
-    await this.$connect();
+    try {
+      await this.$connect();
+      await this.$queryRaw`SELECT 1`;
+      Logger.log('Database connection established');
+    } catch (error) {
+      Logger.error('Database connection failed.');
+      throw error;
+    }
   }
 
   async onModuleDestroy() {
