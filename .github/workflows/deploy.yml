@@ -33,7 +33,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd ~/app/free-router
+            cd free-router
             git pull origin main
             npm ci --omit=dev
             npm run build
