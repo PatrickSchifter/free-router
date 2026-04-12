@@ -12,6 +12,11 @@ datasource db {
   provider = "postgresql"
 }
 
+model User{
+  id           String @id @default(uuid())
+  name String
+}
+
 model Webhook {
   id           String @id @default(uuid())
   url          String
