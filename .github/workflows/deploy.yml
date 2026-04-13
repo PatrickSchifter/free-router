@@ -41,10 +41,13 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          timeout: 120s # ← aumenta o timeout
+          command_timeout: 120s # ← timeout do script
           script: |
             cd free-router
             git pull origin main
-            npm ci --omit=dev      # só dependências de produção
-            npx prisma generate    # leve, sem o build pesado
+            npm ci --omit=dev
+            npx prisma generate
             npx prisma migrate deploy
             pm2 startOrRestart ecosystem.config.js --env production
+            pm2 save
