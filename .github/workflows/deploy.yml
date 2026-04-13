@@ -23,6 +23,8 @@ jobs:
           timeout: 300s
           command_timeout: 300s
           script: |
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             cd free-router
             git pull origin main
             npm ci
